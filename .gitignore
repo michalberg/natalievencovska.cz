@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Claude / agent state
+.claude/
+
+# Backups & temp from local color grading
+assets/_original_unGraded/
+assets/_tmp_*
+
+# Editor / dependency artifacts
+node_modules/
+.idea/
+.vscode/
