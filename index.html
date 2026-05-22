@@ -297,6 +297,27 @@
   .form-success { padding: 28px; background: #edfff4; border: 2px solid var(--color-green); border-radius: 8px; text-align: center; max-width: 500px; }
   .form-success h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
   .form-success p { color: #555; font-size: 15px; }
+  .donate-success { max-width: 720px; text-align: left; }
+  .donate-success h3 { text-align: center; }
+  .donate-success > p { text-align: center; margin-bottom: 18px; }
+  .donate-payment-grid { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; padding: 18px; background: #fff; border-radius: 6px; }
+  .donate-payment-info { margin: 0; }
+  .donate-payment-info > div { display: grid; grid-template-columns: 160px 1fr; gap: 8px; padding: 8px 0; border-bottom: 1px solid #eee; }
+  .donate-payment-info > div:last-child { border-bottom: none; }
+  .donate-payment-info dt { font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+  .donate-payment-info dd { font-size: 15px; font-weight: 600; color: #222; margin: 0; word-break: break-all; }
+  .donate-payment-qr { text-align: center; }
+  .donate-payment-qr img { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  .donate-payment-qr p { font-size: 12px; color: #666; margin-top: 6px; max-width: 220px; margin-left: auto; margin-right: auto; }
+  .donate-payment-note { font-size: 13px; color: #555; margin-top: 14px; text-align: center; line-height: 1.5; }
+  @media (max-width: 860px) {
+    .donate-payment-grid { grid-template-columns: 1fr; gap: 18px; }
+    .donate-payment-qr { order: -1; }
+  }
+  @media (max-width: 480px) {
+    .donate-payment-info > div { grid-template-columns: 1fr; gap: 2px; padding: 10px 0; }
+    .donate-payment-info dd { font-size: 16px; }
+  }
   .message-form { max-width: 720px; }
   .follow-links { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 720px; }
   .follow-card {
@@ -787,9 +808,22 @@
             Strana zelených (IČ 00409740) zpracovává osobní údaje dárců na základě zákonné povinnosti evidovat dárce politických stran v souladu se zákonem č. 424/1991 Sb. Prosím, berte na vědomí, že osobní údaje v rozsahu jméno, příjmení, datum narození a obec trvalého bydliště budou zveřejněny na webových stránkách Strany zelených a Úřadu pro dohled nad hospodařením politických stran a hnutí v rámci výroční zprávy nebo zprávy o volební kampani. E-mailovou adresu a číslo telefonu zpracovává Strana zelených na základě svého oprávněného zájmu za účelem přímého marketingu a rozvoje vztahu s dárci. Proti takovému zpracování je možné vznést námitku na <a href="mailto:soukromi@zeleni.cz">soukromi@zeleni.cz</a>. Více o ochraně osobních údajů ve Straně zelených najdete na <a href="http://www.zeleni.cz/soukromi" target="_blank" rel="noopener">www.zeleni.cz/soukromi</a>.
           </p>
         </form>
-        <div class="form-success" id="donateSuccess" style="display:none">
+        <div class="form-success donate-success" id="donateSuccess" style="display:none">
           <h3>Děkujeme za váš dar!</h3>
-          <p>Potvrzení posíláme na e-mail. Vaše podpora znamená hodně.</p>
+          <p>Pro dokončení převeďte <strong id="donateSuccessAmount">—</strong> Kč na účet níže. Potvrzení a darovací smlouvu vám posíláme na e-mail <strong id="donateSuccessEmail">—</strong>.</p>
+          <div class="donate-payment-grid">
+            <dl class="donate-payment-info">
+              <div><dt>Číslo účtu</dt><dd id="donateSuccessAccount">2400146729/2010</dd></div>
+              <div><dt>IBAN</dt><dd id="donateSuccessIban">CZ5520100000002400146729</dd></div>
+              <div><dt>Variabilní symbol</dt><dd id="donateSuccessVs">—</dd></div>
+              <div><dt>Částka</dt><dd><span id="donateSuccessAmount2">—</span> Kč</dd></div>
+            </dl>
+            <div class="donate-payment-qr">
+              <img id="donateQrImg" alt="QR kód pro převod" width="220" height="220">
+              <p>Naskenujte v mobilní bankovní aplikaci</p>
+            </div>
+          </div>
+          <p class="donate-payment-note">Napište prosím do zprávy pro příjemce, že se jedná o <strong>„dar"</strong> — je to požadavek zákona. (QR kód toto vyplňuje automaticky.)</p>
         </div>
       </div>
 
@@ -1018,7 +1052,102 @@
       success.style.display = 'block';
     });
   }
-  bindForm('donateForm', 'donateSuccess');
+  // Donate form — submit to dary.zeleni.cz API
+  (function () {
+    const API_URL = 'https://api.dary.zeleni.cz/payments';
+    const FUND_ID = '57e111cd859b5a092c8c7c1a';
+    const BANK_ACCOUNT = '2400146729/2010';
+    const BANK_IBAN = 'CZ5520100000002400146729';
+
+    const form = document.getElementById('donateForm');
+    const success = document.getElementById('donateSuccess');
+    if (!form) return;
+    const submitBtn = document.getElementById('donateSubmit');
+    const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+
+    function getAmount() {
+      const custom = document.getElementById('customAmount').value.trim();
+      if (custom) return Number(custom);
+      const sel = document.querySelector('#donationAmounts .amount-btn.selected');
+      return sel ? Number(sel.dataset.amount) : 0;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const amount = getAmount();
+      if (!amount || amount < 1) {
+        alert('Vyplňte prosím částku.');
+        return;
+      }
+
+      const donor = {
+        type: 'person',
+        name: document.getElementById('donorFirstName').value.trim(),
+        surname: document.getElementById('donorLastName').value.trim(),
+        birth: document.getElementById('donorBirth').value.trim(),
+        email: document.getElementById('donorEmail').value.trim(),
+        mobile: document.getElementById('donorPhone').value.trim() || undefined,
+        address: document.getElementById('donorStreet').value.trim(),
+        city: document.getElementById('donorCity').value.trim(),
+        zip: document.getElementById('donorZip').value.trim(),
+      };
+
+      const payload = {
+        fund: FUND_ID,
+        donor,
+        payment: {
+          method: 'transfer',
+          amount,
+          periodical: false,
+          periodicity: null,
+          endDate: null,
+        },
+        message: null,
+      };
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Odesílám…';
+      }
+
+      try {
+        const resp = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+
+        document.getElementById('donateSuccessAmount').textContent = amount.toLocaleString('cs-CZ');
+        document.getElementById('donateSuccessAmount2').textContent = amount.toLocaleString('cs-CZ');
+        document.getElementById('donateSuccessEmail').textContent = donor.email;
+        document.getElementById('donateSuccessAccount').textContent = BANK_ACCOUNT;
+        document.getElementById('donateSuccessIban').textContent = BANK_IBAN;
+        document.getElementById('donateSuccessVs').textContent = data.vs || '—';
+
+        form.style.display = 'none';
+        success.style.display = 'block';
+
+        // SPAYD QR via api.qrserver.com
+        const ibanCompact = BANK_IBAN.replace(/\s+/g, '');
+        const spayd = `SPD*1.0*ACC:${ibanCompact}*AM:${amount}.00*CC:CZK*X-VS:${data.vs}*MSG:DAR`;
+        const qrImg = document.getElementById('donateQrImg');
+        if (qrImg) {
+          qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=4&data=${encodeURIComponent(spayd)}`;
+        }
+
+        success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        console.error('Donate submit error:', err);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHTML;
+        }
+        alert('Něco se nepovedlo, zkuste to prosím znovu. Pokud problém přetrvá, napište na natalie@zeleni.cz.');
+      }
+    });
+  })();
 
   // Voice form — submit to Make.com webhook
   (function () {
