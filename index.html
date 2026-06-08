@@ -64,12 +64,14 @@
   .hero-circle {
     position: absolute;
     right: 0; top: 0; bottom: 0;
-    width: 52%;
-    background: linear-gradient(160deg, #0bd26f 0%, #09c267 50%, #ffa6d1 100%);
+    width: 67%;
+    background: url('assets/natalievencovska-mesto.jpg');
+    background-size: cover; background-position: 58% center;
     clip-path: ellipse(80% 100% at 100% 50%);
     z-index: 0;
   }
   .hero-deco { position: absolute; pointer-events: none; z-index: 1; }
+  .section-deco { position: absolute; pointer-events: none; z-index: 0; }
   .hero-left {
     display: flex; flex-direction: column; justify-content: center;
     padding: 80px 48px 80px 80px; position: relative; z-index: 2;
@@ -136,7 +138,7 @@
   }
   .hero-photo {
     width: 100%; height: calc(100vh - 64px);
-    object-fit: cover; object-position: center top; display: block;
+    object-fit: cover; object-position: center top; display: none;
   }
 
   .section { padding: 72px 80px; }
@@ -146,7 +148,8 @@
   .section-divider { width: 40px; height: 3px; background: var(--color-green); border-radius: 2px; margin: 16px 0 28px; }
   .max-w { max-width: 1280px; margin: 0 auto; }
 
-  .about-section { background: #fff; }
+  .about-section { background: #fff; position: relative; overflow: hidden; }
+  .about-section .max-w { position: relative; z-index: 1; }
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; margin-top: 48px; }
   .about-text, .about-text p, .about-text .about-slogan {
     font-family: 'UrbanGrotesk', sans-serif;
@@ -161,7 +164,8 @@
   .about-photo-accent { position: absolute; width: 110px; height: 110px; background: var(--color-pink); border-radius: 50%; bottom: -24px; left: -24px; z-index: -1; opacity: 0.5; }
   .about-photo-accent2 { position: absolute; width: 60px; height: 60px; background: var(--color-green); border-radius: 4px; top: -12px; right: -12px; z-index: -1; opacity: 0.45; transform: rotate(15deg); }
 
-  .vision-section { background: linear-gradient(150deg, #f3fff9 0%, #fff4fb 100%); }
+  .vision-section { background: linear-gradient(150deg, #f3fff9 0%, #fff4fb 100%); position: relative; overflow: hidden; }
+  .vision-section .max-w { position: relative; z-index: 1; }
   .vision-section .section-label { color: #067a40; }
   .vision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 44px; }
   .vision-card {
@@ -184,7 +188,8 @@
   .vision-card-title { font-size: 19px; font-weight: 800; color: #000; margin-bottom: 10px; line-height: 1.3; }
   .vision-card-text { font-size: 15px; color: #666; line-height: 1.65; }
 
-  .experience-section { background: #fafaf8; }
+  .experience-section { background: #fafaf8; position: relative; overflow: hidden; }
+  .experience-section .max-w { position: relative; z-index: 1; }
   .exp-layout { display: grid; grid-template-columns: minmax(280px, 0.7fr) minmax(0, 1.3fr); gap: 48px; margin-top: 48px; align-items: start; }
   .timeline { display: flex; flex-direction: column; }
   .timeline-item { display: flex; gap: 20px; padding-bottom: 36px; position: relative; }
@@ -208,7 +213,8 @@
     .exp-gallery { grid-auto-rows: 170px; }
   }
 
-  .team-section { background: #fff; }
+  .team-section { background: #fff; position: relative; overflow: hidden; }
+  .team-section .max-w { position: relative; z-index: 1; }
   .team-photo-full {
     width: 100%; border-radius: 8px; display: block;
     max-height: 480px; object-fit: cover; object-position: center 30%;
@@ -218,7 +224,8 @@
   .team-intro p { font-size: 17px; line-height: 1.65; color: #333; font-weight: 400; }
   .team-intro strong { color: #000; font-weight: 700; }
 
-  .support-section { background: #f4fff8; }
+  .support-section { background: #f4fff8; position: relative; overflow: hidden; }
+  .support-section > .max-w { position: relative; z-index: 1; }
   .support-tabs {
     display: flex; gap: 6px; background: #fff;
     border: 2px solid #d5eed8;
@@ -340,7 +347,9 @@
   .voice-section {
     background: linear-gradient(150deg, #fff4fb 0%, #f3fff9 100%);
     padding: 72px 80px;
+    position: relative; overflow: hidden;
   }
+  .voice-section .max-w { position: relative; z-index: 1; }
   .voice-grid {
     display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: start;
   }
@@ -530,6 +539,8 @@
 </section>
 
 <section class="section about-section" id="o-mne">
+  <svg class="section-deco" style="top:16%;left:4%;width:64px;opacity:0.12" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#0bd26f"/></svg>
+  <svg class="section-deco" style="bottom:8%;left:14%;width:50px;opacity:0.1" viewBox="0 0 90 90"><rect x="0" y="0" width="90" height="90" rx="8" fill="#ffa6d1" transform="rotate(15,45,45)"/></svg>
   <div class="max-w">
     <h2 class="section-title fade-in">Kde jsem se vzala a proč kandiduji?</h2>
     <div class="section-divider fade-in"></div>
@@ -550,6 +561,8 @@
 </section>
 
 <section class="section experience-section" id="zkusenosti">
+  <svg class="section-deco" style="top:10%;left:6%;width:58px;opacity:0.11" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#ffa6d1"/></svg>
+  <svg class="section-deco" style="bottom:12%;right:7%;width:84px;opacity:0.1" viewBox="0 0 90 90"><rect x="0" y="0" width="90" height="90" fill="#0bd26f" transform="rotate(22,45,45)"/></svg>
   <div class="max-w">
     <h2 class="section-title fade-in">Zkušenosti? Mám.</h2>
     <div class="section-divider fade-in"></div>
@@ -628,6 +641,8 @@
 </section>
 
 <section class="section vision-section" id="jake-brno">
+  <svg class="section-deco" style="top:8%;right:6%;width:70px;opacity:0.12" viewBox="0 0 90 90"><rect x="0" y="0" width="90" height="90" rx="8" fill="#ffa6d1" transform="rotate(16,45,45)"/></svg>
+  <svg class="section-deco" style="bottom:9%;left:4%;width:56px;opacity:0.13" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#0bd26f"/></svg>
   <div class="max-w">
     <h2 class="section-title fade-in">V čem má Brno na víc?</h2>
     <div class="section-divider fade-in"></div>
@@ -679,6 +694,8 @@
 </section>
 
 <section class="section voice-section" id="napis-mi">
+  <svg class="section-deco" style="top:12%;right:7%;width:80px;opacity:0.12" viewBox="0 0 90 90"><rect x="0" y="0" width="90" height="90" rx="8" fill="#0bd26f" transform="rotate(18,45,45)"/></svg>
+  <svg class="section-deco" style="bottom:14%;left:4%;width:54px;opacity:0.14" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#ffa6d1"/></svg>
   <div class="max-w voice-grid">
     <div class="voice-text fade-in">
       <h2 class="section-title">V čem má Brno na víc podle vás?</h2>
@@ -722,6 +739,9 @@
 </section>
 
 <section class="section team-section" id="tym">
+  <svg class="section-deco" style="top:9%;left:5%;width:88px;opacity:0.1" viewBox="0 0 90 90"><rect x="0" y="0" width="90" height="90" fill="#ffa6d1" transform="rotate(20,45,45)"/></svg>
+  <svg class="section-deco" style="top:24%;right:6%;width:60px;opacity:0.13" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#0bd26f"/></svg>
+  <svg class="section-deco" style="bottom:10%;left:8%;width:48px;opacity:0.12" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#ffa6d1"/></svg>
   <div class="max-w">
     <h2 class="section-title fade-in">Nejsem sama.</h2>
     <div class="section-divider fade-in"></div>
@@ -743,6 +763,8 @@
 </section>
 
 <section class="section support-section" id="podpora">
+  <svg class="section-deco" style="top:9%;left:5%;width:62px;opacity:0.12" viewBox="0 0 60 60"><circle cx="30" cy="30" r="30" fill="#ffa6d1"/></svg>
+  <svg class="section-deco" style="bottom:11%;right:5%;width:80px;opacity:0.1" viewBox="0 0 90 90"><rect x="0" y="0" width="90" height="90" rx="8" fill="#0bd26f" transform="rotate(18,45,45)"/></svg>
   <div class="max-w" style="max-width:100%">
     <div style="max-width:1280px;margin:0 auto">
       <h2 class="section-title fade-in">Jak mě podpořit.</h2>
@@ -836,7 +858,7 @@
 
       <div class="support-panel" data-panel="volunteer">
         <form id="volunteerForm" class="volunteer-form">
-          <p class="support-intro">Vyplňte o sobě pár informací a přidejte se do komunity, která nám pomůže na radnici. Po vyplnění dotazníku se vám ozveme.</p>
+          <p class="support-intro">Vyplňte o sobě pár informací a přidejte se do komunity, která nám pomůže na radnici. Po vyplnění dotazníku se vám brzy ozve někdo z našeho kampaňového týmu.</p>
           <div class="form-row">
             <div class="form-field">
               <label for="volName">Jméno</label>
