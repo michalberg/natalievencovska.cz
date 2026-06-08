@@ -1,0 +1,112 @@
+/* ========================================================================
+   Custom skin pro https://dary.zeleni.cz/brno
+   Pouze barvy a fonty z natalievencovska.cz — žádné změny layoutu.
+   ======================================================================== */
+
+/* ---- Fonty z natalievencovska.cz ---- */
+@font-face {
+  font-family: 'TuskerGrotesk';
+  src: url('https://michalberg.github.io/natalievencovska.cz/fonts/TuskerGrotesk-5700Bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'UrbanGrotesk';
+  src: url('https://michalberg.github.io/natalievencovska.cz/fonts/Urban-Grotesk-Regular.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'UrbanGrotesk';
+  src: url('https://michalberg.github.io/natalievencovska.cz/fonts/Urban-Grotesk-Medium.otf') format('opentype');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'UrbanGrotesk';
+  src: url('https://michalberg.github.io/natalievencovska.cz/fonts/Urban-Grotesk-Bold.otf') format('opentype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'UrbanGrotesk';
+  src: url('https://michalberg.github.io/natalievencovska.cz/fonts/Urban-Grotesk-Black.otf') format('opentype');
+  font-weight: 900; font-style: normal; font-display: swap;
+}
+
+/* ---- Typografie ---- */
+body, input, textarea, button, select, .form-control, .btn {
+  font-family: 'UrbanGrotesk', system-ui, sans-serif !important;
+}
+h1, h2, .h1, .h2 {
+  font-family: 'TuskerGrotesk', sans-serif !important;
+}
+.page-header, .page-header.text-center, h1.page-header {
+  font-family: 'UrbanGrotesk', sans-serif !important;
+  color: #0bd26f !important;
+}
+h1, h2, .h1, .h2 { color: #0bd26f !important; }
+
+/* Tlačítko "Chci darovat!" vycentrovat */
+.text-center.buttons,
+.buttons.text-center {
+  text-align: center !important;
+}
+.btn.btn-primary:not(.btn-lg):not(.btn-block) {
+  display: inline-block !important;
+  margin: 0 auto !important;
+}
+
+/* Hlavní text doleva */
+.container p,
+.container-fluid p,
+.container .lead,
+.container-fluid .lead {
+  text-align: left !important;
+}
+.page-header small,
+.page-header .small,
+h1.page-header small {
+  display: none !important;
+}
+
+/* ---- Barvy (zelená + růžová) ---- */
+.btn-primary,
+button.btn-primary {
+  background-color: #0bd26f !important;
+  border-color: #0bd26f !important;
+  color: #000 !important;
+}
+.btn-primary:hover,
+button.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #09b060 !important;
+  border-color: #09b060 !important;
+  color: #000 !important;
+}
+
+a { color: #067a40 !important; }
+a:hover { color: #09b060 !important; }
+
+.form-control:focus {
+  border-color: #0bd26f !important;
+  box-shadow: 0 0 0 3px rgba(11, 210, 111, 0.18) !important;
+}
+
+.btn-default.active,
+label.btn-default.active,
+div[data-toggle=buttons] label.active,
+div[data-toggle=buttons] label.active:hover {
+  background-color: #0bd26f !important;
+  border-color: #0bd26f !important;
+  color: #000 !important;
+}
+
+/* Vlastní částka — input s prefixem */
+#amount_custom input,
+#amount_custom .input-group-addon,
+#form fieldset #amount_custom input,
+#form fieldset #amount_custom .input-group-addon,
+form fieldset #amount_custom input,
+form fieldset #amount_custom .input-group-addon {
+  background: #0bd26f !important;
+  border-color: #0bd26f !important;
+  color: #000 !important;
+}
